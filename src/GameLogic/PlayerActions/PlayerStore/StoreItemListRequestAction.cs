@@ -1,0 +1,33 @@
+﻿// <copyright file="StoreItemListRequestAction.cs" company="MUnique">
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// </copyright>
+
+namespace MUnique.OpenMU.GameLogic.PlayerActions.PlayerStore;
+
+using MUnique.OpenMU.GameLogic.Views;
+using MUnique.OpenMU.GameLogic.Views.PlayerShop;
+using MUnique.OpenMU.Interfaces;
+
+/// <summary>
+/// Action to request the item list of a player store.
+/// </summary>
+public class StoreItemListRequestAction
+{
+    /// <summary>
+    /// Requests the store item list.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <param name="requestedPlayer">The requested player.</param>
+    public async ValueTask RequestStoreItemListAsync(Player player, Player requestedPlayer)
+    {
+        if (!(requestedPlayer.ShopStorage?.StoreOpen ?? false))
+        {
+            var message = player.GetLocalizedMessage("PlayerStore_Message_NotOpen", "The player store is not open.");
+            await player.InvokeViewPlugInAsync<IShowMessagePlugIn>(p => p.ShowMessageAsync(message, MessageType.BlueNormal)).ConfigureAwait(false);
+            return;
+        }
+
+        player.LastRequestedPlayerStore = new WeakReference<Player>(requestedPlayer);
+        await player.InvokeViewPlugInAsync<IShowShopItemListPlugIn>(p => p.ShowShopItemListAsync(requestedPlayer, false)).ConfigureAwait(false);
+    }
+}

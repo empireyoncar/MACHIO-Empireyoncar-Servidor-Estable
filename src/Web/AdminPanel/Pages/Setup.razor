@@ -1,0 +1,43 @@
+@page "/setup"
+@using MUnique.OpenMU.Web.AdminPanel.Localization
+
+@inherits LocalizedComponentBase
+
+<PageTitle>@this.Localization["Setup_Title"]</PageTitle>
+<Breadcrumb IsFirstFromRoot="true" Caption="@this.Localization["Setup_Breadcrumb"]"/>
+
+@if (this.ShowInstall)
+{
+    <Install InstallationFinished="() => this.ShowInstall = false" />
+}
+else if (!this.SetupService.CanConnectToDatabase)
+{
+    <p>@((MarkupString)this.Localization["Setup_DatabaseStatus"])</p>
+
+    <button class="btn btn-primary" @onclick="this.OnInstallClick">@this.Localization["Setup_Create"]</button>
+}
+else if (!this.SetupService.IsInstalled)
+{
+    <p>@((MarkupString)this.Localization["Setup_DatabaseNotCreated"])</p>
+
+    <button class="btn btn-primary" @onclick="this.OnInstallClick">@this.Localization["Setup_Create"]</button>
+}
+else if (this.SetupService.IsUpdateRequired)
+{
+    <p>@((MarkupString)this.Localization["Setup_DatabaseNeedsUpdate"])</p>
+    <button class="btn btn-primary" @onclick="this.OnUpdateClickAsync">@this.Localization["Setup_Update"]</button>
+}
+else
+{
+    <p>@((MarkupString)this.Localization["Setup_DatabaseUpToDate"])</p>
+    @if (!this._isDataInitialized)
+    {
+        <p>@((MarkupString)this.Localization["Setup_GameVersionMissing"])</p>
+    }
+    else
+    {
+        <p>@((MarkupString)this.Localization.GetString("Setup_GameVersionInitialized", this._gameClientVersion))</p>
+    }
+
+    <button class="btn bg-warning text-dark" @onclick="this.OnReInstallClickAsync">@this.Localization["Setup_Reinstall"]</button>
+}

@@ -1,0 +1,18 @@
+@page "/error"
+@using MUnique.OpenMU.Web.AdminPanel.Localization
+
+@inherits LocalizedComponentBase
+
+<PageTitle>@this.Localization["Error_Title"]</PageTitle>
+<h1 class="text-danger">@this.Localization["Error_Header"]</h1>
+<h2 class="text-danger">@this.Localization["Error_SubHeader"]</h2>
+
+<h3>@this.Localization["Error_DevModeHeading"]</h3>
+<p>
+    @((MarkupString)this.Localization["Error_DevModeDescription1"])
+    <br />
+    <strong>@this.Localization["Error_DevModeWarning"]</strong>
+    @this.Localization["Error_DevModeDescription2"]
+    @((MarkupString)this.Localization["Error_DevModeDescription3"])
+    @this.Localization["Error_DevModeDescription4"]
+</p>
