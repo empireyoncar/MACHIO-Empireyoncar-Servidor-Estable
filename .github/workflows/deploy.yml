@@ -21,4 +21,5 @@ jobs:
 
     - name: Actualizar código en el servidor
       run: |
-        ssh -p 2222 empire@88.8.43.131 "cd ~/Documentos/github/MatuChio-WEB-Estable && git pull"
+        ssh -p 2222 empire@88.8.43.131 "cd ~/Documentos/github/MACHIO-Empireyoncar-Servidor-Estable && git pull"
+
